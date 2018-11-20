@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -37,6 +39,29 @@ namespace TechJobsConsole
             }
             return values;
         }
+        ////////////////////////
+        /*
+        public static List<Dictionary<string, string>> FindByValue(string value)
+        {
+            // load data, if not already loaded
+            LoadData();
+
+            List<Dictionary<string, string>> jobs = new List<Dictionary<string, string>>();
+            
+            foreach (Dictionary<string, string> job in AllJobs)
+            {
+                foreach ( KeyValuePair <string, string> item in job)
+                {
+                    if (item.Value.Contains(value))
+                    {
+                        jobs.Add(job);
+                    }
+                }
+            }
+            return jobs;
+        }
+
+        ////////////////////// 
 
         public static List<Dictionary<string, string>> FindByColumnAndValue(string column, string value)
         {
@@ -57,10 +82,60 @@ namespace TechJobsConsole
 
             return jobs;
         }
+        */
 
         /*
          * Load and parse data from job_data.csv
          */
+
+        public static List<Dictionary<string, string>> FindByValue(string value)
+        {
+            // load data, if not already loaded
+            LoadData();
+
+            List<Dictionary<string, string>> jobs = new List<Dictionary<string, string>>();
+
+            foreach (Dictionary<string, string> item in AllJobs)
+            {
+                foreach (string key in item.Keys)
+                {
+                    string aValue = item[key];
+
+                    if (aValue.ToLower().Contains(value.ToLower()))
+                    {
+                        jobs.Add(item);
+
+                        // Finding one field in a job that matches is sufficient
+                        break;
+                    }
+                }
+            }
+
+            return jobs;
+        }
+
+        public static List<Dictionary<string, string>> FindByColumnAndValue(string column, string value)
+        {
+            // load data, if not already loaded
+            LoadData();
+
+            List<Dictionary<string, string>> jobs = new List<Dictionary<string, string>>();
+
+            foreach (Dictionary<string, string> row in AllJobs)
+            {
+                string aValue = row[column];
+
+                if (aValue.ToLower().Contains(value.ToLower()))
+                {
+                    jobs.Add(row);
+                }
+            }
+
+            return jobs;
+        }
+
+
+
         private static void LoadData()
         {
 
@@ -102,6 +177,11 @@ namespace TechJobsConsole
             IsDataLoaded = true;
         }
 
+        internal static List<Dictionary<string, string>> FindByValue(string columnChoice, string searchTerm)
+        {
+            throw new NotImplementedException();
+        }
+
         /*
          * Parse a single line of a CSV file into a string array
          */
@@ -138,5 +218,9 @@ namespace TechJobsConsole
 
             return rowValues.ToArray();
         }
+    }
+
+    class Dictionary<T>
+    {
     }
 }

@@ -10,17 +10,21 @@ namespace TechJobsConsole
             // Create two Dictionary vars to hold info for menu and data
 
             // Top-level menu options
-            Dictionary<string, string> actionChoices = new Dictionary<string, string>();
-            actionChoices.Add("search", "Search");
-            actionChoices.Add("list", "List");
+            Dictionary<string, string> actionChoices = new Dictionary<string, string>
+            {
+                { "search", "Search" },
+                { "list", "List" }
+            };
 
             // Column options
-            Dictionary<string, string> columnChoices = new Dictionary<string, string>();
-            columnChoices.Add("core competency", "Skill");
-            columnChoices.Add("employer", "Employer");
-            columnChoices.Add("location", "Location");
-            columnChoices.Add("position type", "Position Type");
-            columnChoices.Add("all", "All");
+            Dictionary<string, string> columnChoices = new Dictionary<string, string>
+            {
+                { "core competency", "Skill" },
+                { "employer", "Employer" },
+                { "location", "Location" },
+                { "position type", "Position Type" },
+                { "all", "All" }
+            };
 
             Console.WriteLine("Welcome to LaunchCode's TechJobs App!");
 
@@ -57,13 +61,16 @@ namespace TechJobsConsole
                     // What is their search term?
                     Console.WriteLine("\nSearch term: ");
                     string searchTerm = Console.ReadLine();
+                    Console.WriteLine("\n");
 
                     List<Dictionary<string, string>> searchResults;
-
+                    
                     // Fetch results
                     if (columnChoice.Equals("all"))
                     {
-                        Console.WriteLine("Search all fields not yet implemented.");
+                        //Console.WriteLine("Search all fields not yet implemented.");
+                        searchResults = JobData.FindByValue(columnChoice, searchTerm);
+                        PrintJobs(searchResults);
                     }
                     else
                     {
@@ -118,7 +125,17 @@ namespace TechJobsConsole
 
         private static void PrintJobs(List<Dictionary<string, string>> someJobs)
         {
-            Console.WriteLine("printJobs is not implemented yet");
+            foreach (Dictionary<string, string> job in someJobs)
+            {
+                Console.WriteLine("**********");
+                foreach (KeyValuePair<string, string> item in job)
+                {
+                    Console.WriteLine(string.Format("{0}: {1}", item.Key, item.Value));
+                }
+                Console.WriteLine("********** \n");
+            }
+            
+            //Console.WriteLine("printJobs is not implemented yet");
         }
     }
 }
